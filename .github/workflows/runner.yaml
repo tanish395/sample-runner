@@ -1,1 +1,48 @@
+name: Self-Hosted Runner Full Test (Safe)
 
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-self-hosted:
+    runs-on: self-hosted
+
+    env:
+      PROJECT_ENV: development
+      DEPLOY_REGION: us-east
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Show system info
+        run: |
+          echo "✅ Self-hosted runner is working!"
+          echo "OS: $(uname -a)"
+          echo "User: $(whoami)"
+          echo "Directory: $(pwd)"
+
+      - name: Show environment variables
+        run: |
+          echo "Project environment: $PROJECT_ENV"
+          echo "Deploy region: $DEPLOY_REGION"
+
+      - name: Simulate dependency install
+        run: |
+          echo "Installing dependencies..."
+          sleep 2
+
+      - name: Fake build step
+        run: |
+          echo "Running build..."
+          mkdir -p build
+          echo "Build successful!" > build/output.txt
+          cat build/output.txt
+
+      - name: Final check
+        run: |
+          echo "Listing build directory:"
+          ls -l build
+          echo "✅ Build and runner check completed!"
